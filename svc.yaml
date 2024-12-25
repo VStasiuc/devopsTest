@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: veacheslav-service
+  namespace: veacheslav
+spec:
+  selector:
+    app: veacheslav
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: veacheslav-ingress
+  namespace: veacheslav
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: veacheslav-stasiuc.xm-tech-interviews.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: veacheslav-service
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - veacheslav-stasiuc.xm-tech-interviews.com
+    secretName: veacheslav-ssl
